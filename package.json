@@ -1,0 +1,15 @@
+{
+  "name": "ninja-zwave",
+  "version": "0.0.0",
+  "description": "Ninja Blocks module to communicate with zwave hardware",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jzGreen/ninja-zwave.git"
+  },
+  "author": "jz",
+  "license": "BSD"
+}
