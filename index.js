@@ -4,20 +4,26 @@ var Device = require('./lib/device')
   , stream = require('stream')
   ;
 
-// Give our module a stream interface
-util.inherits(myModule,stream);
+// Give our driver a stream interface
+util.inherits(myDriver,stream);
 
-var myModuleObject;
+var myDriverObject;
 var devices = []; // devices that the driver has been notified of
+
+function registerNewDevice(key) {
+	var device = new Device();
+	device.G = key;
+	devices[key] = device;
+	myDriverObject.emit('register', device);
+	return device;
+}
 
 function deviceForKey(key) {
 	var device = undefined;
 	if (key != undefined) {
 		device = devices[key];
 		if (device == undefined) {
-			device = new Device();
-			devices[key] = device;
-			myModuleObject.emit('register', device);
+			device = registerNewDevice(key); 
 		}
 	}
 	return device;
@@ -27,7 +33,6 @@ function dataReceived(key, label, reading) {
 	var device = deviceForKey(key);
 	reading = parseFloat(reading);
 	if (device != undefined) {
-		device.G = key;
 		device.sendData(reading);
 	}
 }
@@ -42,7 +47,7 @@ function dataReceived(key, label, reading) {
  * Called when our client starts up
  * @constructor
  *
- * @param  {Object} opts Saved/default module configuration
+ * @param  {Object} opts Saved/default driver configuration
  * @param  {Object} app  The app event emitter
  * @param  {String} app.id The client serial number
  *
@@ -52,10 +57,10 @@ function dataReceived(key, label, reading) {
  * @fires register - Emit this when you wish to register a device (see Device)
  * @fires config - Emit this when you wish to send config data back to the cloud
  */
-function myModule(opts,app) {
+function myDriver(opts,app) {
 
   var self = this;
-  myModuleObject = this;
+  myDriverObject = this;
 
   app.on('client::up',function(){
 
@@ -82,9 +87,9 @@ function myModule(opts,app) {
  * Called when config data is received from the cloud
  * @param  {Object} config Configuration data
  */
-myModule.prototype.config = function(config) {
+myDriver.prototype.config = function(config) {
 
 };
 
 // Export it
-module.exports = myModule;
+module.exports = myDriver;
