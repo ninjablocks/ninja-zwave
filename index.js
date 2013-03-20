@@ -5,16 +5,18 @@ var Device = require('./lib/device')
   ;
 
 // Give our driver a stream interface
-util.inherits(myDriver,stream);
+util.inherits(zwDriver,stream);
 
-var myDriverObject;
+const enabled = true;
+
+var zwDriverObject;
 var devices = []; // devices that the driver has been notified of
 
 function registerNewDevice(key) {
 	var device = new Device();
 	device.G = key;
 	devices[key] = device;
-	myDriverObject.emit('register', device);
+	zwDriverObject.emit('register', device);
 	return device;
 }
 
@@ -57,10 +59,10 @@ function dataReceived(key, label, reading) {
  * @fires register - Emit this when you wish to register a device (see Device)
  * @fires config - Emit this when you wish to send config data back to the cloud
  */
-function myDriver(opts,app) {
+function zwDriver(opts,app) {
 
   var self = this;
-  myDriverObject = this;
+  zwDriverObject = this;
 
   app.on('client::up',function(){
 
@@ -73,13 +75,14 @@ function myDriver(opts,app) {
 
     self.save();
 
-    // Register a device
-    //self.emit('register', new Device());
-
-	process.nextTick(function() {
-		var si = new SocketInterpreter(dataReceived);	
+    if (enabled) {
+        process.nextTick(function() {
+            var si = new SocketInterpreter(dataReceived);	
 	});
-
+    }
+    else {
+        console.log("Z-Wave module is not enabled");
+    }
   });
 };
 
@@ -87,9 +90,9 @@ function myDriver(opts,app) {
  * Called when config data is received from the cloud
  * @param  {Object} config Configuration data
  */
-myDriver.prototype.config = function(config) {
+zwDriver.prototype.config = function(config) {
 
 };
 
 // Export it
-module.exports = myDriver;
+module.exports = zwDriver;
