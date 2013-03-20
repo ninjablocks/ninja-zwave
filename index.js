@@ -7,7 +7,7 @@ var Device = require('./lib/device')
 // Give our driver a stream interface
 util.inherits(zwDriver,stream);
 
-const enabled = true;
+const enabled = false;
 
 var zwDriverObject;
 var devices = []; // devices that the driver has been notified of
