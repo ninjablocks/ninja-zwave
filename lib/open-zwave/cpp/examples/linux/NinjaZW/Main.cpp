@@ -345,7 +345,7 @@ int main( int argc, char* argv[] )
 			{
 				ValueID v = *it2;
 				if (NinjaBlocks::NBZWInterpreter::isRecognised(v)) {
-					//Manager::Get()->EnablePoll(v, 1);
+					Manager::Get()->EnablePoll(v, 1);
 					break;
 				}
 
