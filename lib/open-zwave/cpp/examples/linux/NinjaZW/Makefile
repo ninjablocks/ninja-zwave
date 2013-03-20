@@ -23,12 +23,12 @@ DEBUG_LDFLAGS	:= -g
 CFLAGS	:= -c $(DEBUG_CFLAGS)
 LDFLAGS	:= $(DEBUG_LDFLAGS)
 
-NBLIBINCLUDE	:= /usr/local/include/nbcomms/
-NBLIBDIR	:= /usr/local/lib/nbcomms/
+NBLIBINCLUDE	:= ../../../../../../../common/include/
+NBLIBDIR	:= ../../../../../../../common/lib/linux/
 
 INCLUDES	:= -I ../../../src -I ../../../src/command_classes/ -I ../../../src/value_classes/ \
 	-I ../../../src/platform/ -I ../../../h/platform/unix -I ../../../tinyxml/ -I ../../../hidapi/hidapi/ -I $(NBLIBINCLUDE)
-LIBS = -L$(NBLIBDIR) $(wildcard ../../../lib/linux/*.a) -lnbcomms
+LIBS = $(wildcard ../../../lib/linux/*.a) -L$(NBLIBDIR)
 
 OBJECTS	:= Main.o NBZWInterpreter.o
 
@@ -41,8 +41,7 @@ lib:
 	$(MAKE) -C ../../../build/linux
 
 test:	$(OBJECTS) lib
-	$(LD) -o $@ $(LDFLAGS) $(OBJECTS) $(LIBS) -pthread -ludev
-#	$(LD) -o $@ $(LDFLAGS) $< $(LIBS) -pthread -ludev
+	$(LD) -o $@ $(LDFLAGS) $(OBJECTS) $(LIBS) -pthread -ludev -lnbcomms
 
 clean:
 	rm -f test $(OBJECTS)
