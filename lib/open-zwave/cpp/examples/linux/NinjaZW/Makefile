@@ -35,16 +35,16 @@ OBJECTS	:= Main.o NBZWInterpreter.o
 %.o : %.cpp
 	$(CXX) $(CFLAGS) $(INCLUDES) -o $@ $<
 
-all: test
+all: ninjaZW
 
 lib:
 	$(MAKE) -C ../../../build/linux
 
-test:	$(OBJECTS) lib
+ninjaZW:	$(OBJECTS) lib
 	$(LD) -o $@ $(LDFLAGS) $(OBJECTS) $(LIBS) -pthread -ludev -lnbcomms
 
 clean:
-	rm -f test $(OBJECTS)
+	rm -f ninjaZW $(OBJECTS)
 
 XMLLINT := $(shell whereis -b xmllint | cut -c10-)
 
