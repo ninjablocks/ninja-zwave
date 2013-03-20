@@ -23,11 +23,11 @@ const char *kLabelPower = "Power";
 
 //driver callbacks
 void isListening() {
-	printf("zwave exec: is listening called back\n");
+	//printf("zwave exec: is listening called back\n");
 }
 
 void didReceiveVariable(char *name, char *value) {
-	printf("zwave exec: received %s : %s\n", name, value);
+	//printf("zwave exec: received %s : %s\n", name, value);
 }
 
 NBZWInterpreter::NBZWInterpreter() {
@@ -63,11 +63,11 @@ void NBZWInterpreter::valueChanged(string &uniqueIdentifier, OpenZWave::ValueID 
 		if (previousReading.length() == 0) {
 			fPrevious = -1;
 		}
-		float delta = fCurrent-fPrevious;
-		if (delta<0) { delta =- delta; }
+		float deltaMag = fCurrent-fPrevious;
+		if (deltaMag<0) { deltaMag = -deltaMag; }
+		float fCurrentMag = ((fCurrent >= 0) ? fCurrent : -fCurrent);
 		//report on significant change from previous
-		if ((delta > 1) || (delta*10 > fCurrent)) { // difference > 1W or 10%
-			cout << "update from " << previousReading << " to " << reading << endl;
+		if ((deltaMag > 1) || (deltaMag*10 > fCurrentMag)) { // difference > 1W or 10%
 			valueMap[uniqueIdentifier] = reading; // store new reading
 			string value = "\"" + label + "|" + reading + "\"";
 			//TODO: add to lib to send with VID, DID, G, DA
