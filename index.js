@@ -1,5 +1,4 @@
 var Device = require('./lib/device')
-  , SocketInterpreter = require('./lib/socketInterpreter')
   , util = require('util')
   , stream = require('stream')
   ;
@@ -8,6 +7,9 @@ var Device = require('./lib/device')
 util.inherits(zwDriver,stream);
 
 const enabled = false;
+if (enabled) {
+  var SocketInterpreter = require('./lib/socketInterpreter')
+}
 
 var zwDriverObject;
 var devices = []; // devices that the driver has been notified of
