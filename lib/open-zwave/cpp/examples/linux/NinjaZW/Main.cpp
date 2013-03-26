@@ -257,6 +257,25 @@ void OnNotification
 	pthread_mutex_unlock( &g_criticalSection );
 }
 
+char *valueGenreString[] = {"Basic", "User", "Config", "System"};
+char *valueTypeString[] = {"bool", "byte", "dec", "int", "List", "Schedule", "Short", "String", "Button", "Raw"};
+
+void printValueID(ValueID &valueId) {
+	string value;
+	Manager::Get()->GetValueAsString(valueId, &value);
+	printf(" \\- Value[%i]: Genre(%s), Type(%s), \"%s\" %s (%s) [%i - %i]\n"
+		//, valueId.GetId()
+		, valueId.GetIndex()
+		, valueGenreString[(int)valueId.GetGenre()]
+		, valueTypeString[(int)valueId.GetType()]
+		, (Manager::Get()->GetValueLabel(valueId)).c_str()
+		, value.c_str()
+		, (Manager::Get()->GetValueUnits(valueId)).c_str()
+		, Manager::Get()->GetValueMin(valueId)
+		, Manager::Get()->GetValueMax(valueId)
+	);
+}
+
 //-----------------------------------------------------------------------------
 // <main>
 // Create the driver and then wait
@@ -337,13 +356,14 @@ int main( int argc, char* argv[] )
 		for( list<NodeInfo*>::iterator it = g_nodes.begin(); it != g_nodes.end(); ++it )
 		{
 			NodeInfo* nodeInfo = *it;
-			
+			//printf("Home: %d. Node: %d\n", nodeInfo->m_homeId, nodeInfo->m_nodeId);			
 			// skip the controller (most likely node 1)
 			if( nodeInfo->m_nodeId == 1) continue;
 
 			for( list<ValueID>::iterator it2 = nodeInfo->m_values.begin(); it2 != nodeInfo->m_values.end(); ++it2 )
 			{
 				ValueID v = *it2;
+				//printValueID(v);
 				if (NinjaBlocks::NBZWInterpreter::isRecognised(v)) {
 					Manager::Get()->EnablePoll(v, 1);
 					break;
