@@ -1,6 +1,6 @@
 {
   "name": "ninja-zwave",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Ninja Blocks module to communicate with zwave hardware",
   "main": "index.js",
   "scripts": {
