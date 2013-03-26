@@ -83,7 +83,7 @@ function zwDriver(opts,app) {
 	});
     }
     else {
-        console.log("Z-Wave module is not enabled");
+        app.log.info("Z-Wave module is not enabled");
     }
   });
 };
