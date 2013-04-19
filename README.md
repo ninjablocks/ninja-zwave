@@ -16,6 +16,8 @@ This library is compiled with Open Z-Wave to access the udev database and query 
 
 Compile Z-Wave library
 ----------------------
+(&lt;client> is /opt/ninja for the Ninja Block)
+
     cd <client>/drivers/ninja-zwave/lib/open-zwave/cpp/build/linux/
     make
 
